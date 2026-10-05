@@ -1,63 +1,38 @@
-import LikeButton from '../LikeButton/LikeButton';
+import { Link } from 'react-router-dom';
 import RatingBadge from '../RatingBadge/RatingBadge';
 import './MovieDetails.css';
 
-function MovieDetails() {
+function MovieDetails({movie}) {
+    const { Title, Year, Poster, Plot, Director, Actors, Genre, Ratings } = movie;
   return (
-    <article className="movie-details">
-      <button type="button" className="movie-details__back">
-        ← Ко всем фильмам
-      </button>
+     <article className="movie-details">
+      <Link to="/" className="movie-details__back">← Назад</Link>
 
-      <div className="movie-details__layout">
-        <div className="movie-details__poster-col">
-          <img
-            className="movie-details__poster"
-            src="https://m.media-amazon.com/images/M/MV5BNzY3OWQ5NDktNWQ2OC00ZjdlLThkMmItMDhhNDk3NTFiZGU4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg"
-            alt="Joker"
-          />
-        </div>
-
-        <div className="movie-details__main">
-          <div className="movie-details__heading">
-            <div>
-              <h1 className="movie-details__title">Joker</h1>
-              <p className="movie-details__meta">2019 · R · 122 min</p>
-            </div>
-            <LikeButton />
+      <div className="movie-details__head">
+        {Poster && Poster !== 'N/A' ? (
+          <img className="movie-details__poster" src={Poster} alt={Title} />
+        ) : (
+          <div className="movie-details__poster movie-details__poster--empty">
+            Постер отсутствует
           </div>
+        )}
 
-          <p className="movie-details__genre">Crime, Drama, Thriller</p>
-
-          <p className="movie-details__plot">
-            Arthur Fleck, a party clown and a failed stand-up comedian, leads an
-            impoverished life with his ailing mother. However, when society
-            shuns him and brands him as a freak, he decides to embrace the life
-            of chaos in Gotham City.
-          </p>
+        <div className="movie-details__info">
+          <h1 className="movie-details__title">{Title}</h1>
+          <p className="movie-details__meta">{Year} · {Genre}</p>
+          <p className="movie-details__plot">{Plot}</p>
+          <p className="movie-details__row"><strong>Режиссёр:</strong> {Director}</p>
+          <p className="movie-details__row"><strong>В ролях:</strong> {Actors}</p>
 
           <div className="movie-details__ratings">
-            <RatingBadge />
-            <div className="rating-badge">
-              <span className="rating-badge__value">68%</span>
-              <span className="rating-badge__source">Rotten Tomatoes</span>
-            </div>
-            <div className="rating-badge">
-              <span className="rating-badge__value">59/100</span>
-              <span className="rating-badge__source">Metacritic</span>
-            </div>
+            {Ratings?.map((rating) => (
+              <RatingBadge
+                key={rating.Source}
+                source={rating.Source}
+                value={rating.Value}
+              />
+            ))}
           </div>
-
-          <dl className="movie-details__facts">
-            <div className="movie-details__fact"><dt>Режиссёр</dt><dd>Todd Phillips</dd></div>
-            <div className="movie-details__fact"><dt>Сценарий</dt><dd>Todd Phillips, Scott Silver, Bob Kane</dd></div>
-            <div className="movie-details__fact"><dt>В ролях</dt><dd>Joaquin Phoenix, Robert De Niro, Zazie Beetz</dd></div>
-            <div className="movie-details__fact"><dt>Дата выхода</dt><dd>04 Oct 2019</dd></div>
-            <div className="movie-details__fact"><dt>Язык</dt><dd>English, German</dd></div>
-            <div className="movie-details__fact"><dt>Страна</dt><dd>United States, Canada, Australia</dd></div>
-            <div className="movie-details__fact"><dt>Награды</dt><dd>Won 2 Oscars. 120 wins &amp; 247 nominations total</dd></div>
-            <div className="movie-details__fact"><dt>Сборы</dt><dd>$335,477,657</dd></div>
-          </dl>
         </div>
       </div>
     </article>
